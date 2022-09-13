@@ -54,7 +54,7 @@ function NameChecker() {
 }
 
 const ButtonFacade = () => {
-    const { approved, userAddress } = useSelector(state => state.metamaskSlice);
+    const { approved, userAddress, balance } = useSelector(state => state.metamaskSlice);
     const isApproved = parseFloat(fromBaseUnit(approved)) >= 20;
     const {
         resolvedAddress
@@ -62,6 +62,9 @@ const ButtonFacade = () => {
     const dispatch = useDispatch();
     if (!userAddress)
         return (<ConnectWalletButton />);
+
+    if (parseFloat(fromBaseUnit(balance)) < 20)
+        return "Not enough alpacaUSD. Mint price is 20 aUSD";
 
     if (resolvedAddress === "0x0000000000000000000000000000000000000000") {
         if (isApproved)
@@ -72,7 +75,7 @@ const ButtonFacade = () => {
 
         return (
             <>
-                <Typography>Approve alpacaUSD to buy domain</Typography>
+                <Typography>Approve aUSD to buy domain</Typography>
                 <Button onClick={() => {
                     dispatch(approveToken)
                 }}>{"Approve alpacaUSD"}</Button>
@@ -98,7 +101,7 @@ const getResultString = (resolvedName, resolvedAddress) => {
 
     if (resolvedAddress === "0x0000000000000000000000000000000000000000")
         return (<Typography component={'span'} color="green">
-            {`Name ${resolvedName}.alpaca is free`}
+            {`Name ${resolvedName}.alpaca is avaliable to mint for 20 alpacaUSD`}
         </Typography>)
 
     return (<Typography component={'span'} color="red">

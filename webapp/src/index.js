@@ -14,7 +14,7 @@ import Faucet from "./components/Faucet";
 import { AppBar, Button, Container, Icon, IconButton, SvgIcon, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { clearAccountsAction, requestAccountsAction } from './features/metamask';
-import { shortAddress } from './helpers';
+import { fromBaseUnit, shortAddress } from './helpers';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 window.web3 = new Web3(window.ethereum);
@@ -42,7 +42,7 @@ root.render(
 function NavigationBar() {
     const nav = useNavigate();
     const dispatch = useDispatch();
-    const { userAddress: address } = useSelector(state => state.metamaskSlice);
+    const { userAddress: address, balance } = useSelector(state => state.metamaskSlice);
 
     return (
         <AppBar component="nav" position='sticky'>
@@ -69,7 +69,7 @@ function NavigationBar() {
                             address ?
                                 dispatch(clearAccountsAction) :
                                 dispatch(requestAccountsAction)
-                        }}>{address ? shortAddress(address, 5, 5) : "Connect Wallet"}</Button>
+                        }}>{address ? `${shortAddress(address, 5, 5)} (${fromBaseUnit(balance)} aUSD)` : "Connect Wallet"}</Button>
                 </Box>
             </Toolbar>
         </AppBar>
