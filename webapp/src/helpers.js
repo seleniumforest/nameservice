@@ -7,3 +7,6 @@ export const fromBaseUnit = (amount, decimals = 18) => {
 
     return typeof amount === "string" ? demicrofied.toString() : demicrofied;
 }
+
+export const shortAddress = (addr, start = 5, end = 2) =>
+    `${addr.slice(0, start)}...${addr.slice(addr.length - end, addr.length)}`;

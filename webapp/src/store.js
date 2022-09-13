@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from "redux-saga";
+import { faucetSlice } from './features/faucet';
 import { metamaskSlice } from './features/metamask';
 import { nameCheckerSlice } from './features/nameChecker';
 import rootSaga from './rootSaga';
@@ -22,7 +23,8 @@ const sagaMw = createSagaMiddleware();
 const store = configureStore({
     reducer: {
         metamaskSlice: metamaskSlice,
-        nameCheckerSlice: nameCheckerSlice
+        nameCheckerSlice: nameCheckerSlice,
+        faucetSlice: faucetSlice
     },
     middleware: [
         logger,

@@ -4,7 +4,7 @@ import abi from "../../resources/NameServiceAbi.json";
 import structuredClone from '@ungap/structured-clone';
 import config from "../../config";
 import { setResolvedAddress } from "./namechecker.slice";
-import { loadExistingNamesSaga } from "../metamask/metamask.sagas";
+import { loadExistingNamesSaga, loadTokenApprovalSaga, loadTokenBalanceSaga } from "../metamask/metamask.sagas";
 
 export function* checkNameSaga() {
     try {
@@ -31,6 +31,8 @@ export function* registerNameSaga() {
         let name = yield select((state) => state.nameCheckerSlice.resolvedName);
         let from = yield select((state) => state.metamaskSlice.userAddress);
         yield call(contract.methods.mintName(name).send, { from });
+        yield call(loadTokenBalanceSaga);
+        yield call(loadTokenApprovalSaga);
         yield call(loadExistingNamesSaga);
     } catch (e) {
       console.log(e?.message)   
